@@ -7,10 +7,30 @@
 using namespace std;
 
 Zp Zp::inverse() const{
-	// Implement the Extended Euclidean Algorithm to return the inverse mod PRIME		
+	// Implement the Extended Euclidean Algorithm to return the inverse mod PRIME
+	uberzahl a = value;
+	uberzahl b = PRIME;
+	uberzahl x = uberzahl(1);
+	uberzahl y = uberzahl(0);
+	uberzahl xLast = uberzahl(0);
+	uberzahl yLast = uberzahl(1);
+	uberzahl q, r, s, t;
 
-	assert(0);
-	return 0;
+   while (a != uberzahl(0))
+   {
+       q = b / a;
+       r = b % a;
+       s = xLast - q*x;
+       t = yLast - q*y;
+       xLast = x;
+       yLast = y;
+       x = s;
+       y = t;
+       b = a;
+       a = r;
+   }		
+
+	return xLast;
 }
 
 
@@ -31,9 +51,33 @@ ECpoint ECpoint::repeatSum(ECpoint p, uberzahl v) const {
 
 Zp ECsystem::power(Zp val, uberzahl pow) {
 	//Find the product of val*val*...*val (pow times)
+	uberzahl c = 0;
+	uberzahl f = 1;
 
-	assert(0);
-	return 0;
+	//uberzahl k = 0;
+	int k = 0;
+	uberzahl j = 1;
+	while (j <= pow)
+	{
+		j = j * uberzahl(2);
+		k = k + 1;
+	}
+
+	k = k - 1;
+
+	for (int i = k; i >= 0; --i)
+	{
+		c = c * uberzahl(2);
+		f = (f * f) % PRIME;
+		if ( ((pow >> i) & uberzahl(1)) == uberzahl(1))
+		{
+			c = c + uberzahl(1);
+			f = (f * val.getValue()) % PRIME;
+		}
+
+	} 
+
+	return f;
 }
 
 
