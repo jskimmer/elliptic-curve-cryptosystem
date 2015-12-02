@@ -148,7 +148,7 @@ ECpoint ECsystem::pointDecompress(uberzahl compressedPoint){
 	Zp z = power(xr, uberzahl(3)) + Zp(A) * xr + Zp(B);
 	Zp sqr1 = power(z, (PRIME+1)/4);
 	Zp sqr2 = Zp(PRIME) - sqr1;
-	if ((sqr1.getValue() & uberzahl(1)) == (compressedPoint & uberzahl(1)))
+	if (sqr1.getValue() & uberzahl(1) == compressedPoint & uberzahl(1))
 	{
 		return ECpoint(xr, sqr1);
 	}
