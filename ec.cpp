@@ -164,17 +164,26 @@ ECpoint ECsystem::pointDecompress(uberzahl compressedPoint){
 pair<pair<Zp,Zp>,uberzahl> ECsystem::encrypt(ECpoint publicKey, uberzahl privateKey,Zp plaintext0,Zp plaintext1){
 	// You must implement elliptic curve encryption
 	//  Do not generate a random key. Use the private key that is passed from the main function
-
-	assert(0);
-	return make_pair(make_pair(0,0),0);
+	//uberzahl x = random(0, ORDER);
+	ECpoint q = privateKey * ECpoint(GX, GY);
+	ECpoint r = privateKey * publicKey;
+	Zp c0 = Zp((plaintext0 * r.x).getValue() % PRIME);
+	Zp c1 = Zp((plaintext1 * r.y).getValue() % PRIME);
+	uberzahl c2 = pointCompress(q);
+	return make_pair(make_pair(c0, c1), c2);
+	//assert(0);
+	//return make_pair(make_pair(0,0),0);
 }
 
 
 pair<Zp,Zp> ECsystem::decrypt(pair<pair<Zp,Zp>, uberzahl> ciphertext){
 	// Implement EC Decryption
-
-	assert(0);
-	return make_pair(0,0);
+	ECpoint R = privateKey * pointDecompress(ciphertext.second);
+	Zp m0 = Zp((ciphertext.first.first * R.x.inverse()).getValue() % PRIME);
+	Zp m1 = Zp((ciphertext.first.second * R.y.inverse()).getValue() % PRIME);
+	return make_pair(m0, m1);
+	//assert(0);
+	//return make_pair(0,0);
 }
 
 
